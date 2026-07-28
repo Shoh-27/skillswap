@@ -15,6 +15,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'bio',
+        'role', 'is_banned', 'banned_at',
         'avg_rating', 'total_reviews', 'total_sessions',
         'city', 'timezone',
         'last_active_at', 'streak_days', 'last_streak_date',
@@ -25,6 +26,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'password'          => 'hashed',
+        'is_banned'         => 'boolean',
+        'banned_at'         => 'datetime',
         'avg_rating'        => 'float',
         'total_reviews'     => 'integer',
         'total_sessions'    => 'integer',
@@ -95,6 +98,11 @@ class User extends Authenticatable
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 
     public function recalculateRating(): void
     {

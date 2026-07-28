@@ -144,4 +144,39 @@ export const campusApi = {
   sessionComplete: (minutes) => api.post('/campus/session-complete', { minutes }),
 }
 
+// ── Admin
+export const adminApi = {
+  stats:  ()             => api.get('/admin/stats'),
+
+  users: {
+    list:   (params = {}) => api.get('/admin/users', { params }),
+    show:   (id)           => api.get(`/admin/users/${id}`),
+    role:   (id, role)     => api.put(`/admin/users/${id}/role`, { role }),
+    ban:    (id)           => api.put(`/admin/users/${id}/ban`),
+    unban:  (id)           => api.put(`/admin/users/${id}/unban`),
+    delete: (id)           => api.delete(`/admin/users/${id}`),
+  },
+
+  skills: {
+    list:   ()      => api.get('/admin/skills'),
+    create: (name)  => api.post('/admin/skills', { name }),
+    delete: (id)    => api.delete(`/admin/skills/${id}`),
+  },
+
+  sessions: {
+    list:   (params = {}) => api.get('/admin/sessions', { params }),
+    delete: (id)           => api.delete(`/admin/sessions/${id}`),
+  },
+
+  groupSessions: {
+    list:   (params = {}) => api.get('/admin/group-sessions', { params }),
+    delete: (id)           => api.delete(`/admin/group-sessions/${id}`),
+  },
+
+  reviews: {
+    list:   (params = {}) => api.get('/admin/reviews', { params }),
+    delete: (id)           => api.delete(`/admin/reviews/${id}`),
+  },
+}
+
 export default api

@@ -15,6 +15,12 @@ use App\Http\Controllers\API\ResourceController;
 use App\Http\Controllers\API\ProgressController;
 use App\Http\Controllers\API\AIMatchingController;
 use App\Http\Controllers\API\CampusController;
+use App\Http\Controllers\API\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\API\Admin\UserController as AdminUserController;
+use App\Http\Controllers\API\Admin\SkillController as AdminSkillController;
+use App\Http\Controllers\API\Admin\SessionController as AdminSessionController;
+use App\Http\Controllers\API\Admin\GroupSessionController as AdminGroupSessionController;
+use App\Http\Controllers\API\Admin\ReviewController as AdminReviewController;
 
 Route::prefix('v1')->group(function () {
 
@@ -102,5 +108,30 @@ Route::prefix('v1')->group(function () {
         Route::get ('campus/pulse',            [CampusController::class, 'pulse']);
         Route::get ('campus/today',            [CampusController::class, 'today']);
         Route::post('campus/session-complete', [CampusController::class, 'sessionComplete']);
+
+        // ── Admin ────────────────────────────────────────────────────────
+        Route::prefix('admin')->middleware('admin')->group(function () {
+            Route::get('stats', [AdminDashboardController::class, 'stats']);
+
+            Route::get   ('users',              [AdminUserController::class, 'index']);
+            Route::get   ('users/{id}',         [AdminUserController::class, 'show']);
+            Route::put   ('users/{id}/role',    [AdminUserController::class, 'updateRole']);
+            Route::put   ('users/{id}/ban',     [AdminUserController::class, 'ban']);
+            Route::put   ('users/{id}/unban',   [AdminUserController::class, 'unban']);
+            Route::delete('users/{id}',         [AdminUserController::class, 'destroy']);
+
+            Route::get   ('skills',    [AdminSkillController::class, 'index']);
+            Route::post  ('skills',    [AdminSkillController::class, 'store']);
+            Route::delete('skills/{id}', [AdminSkillController::class, 'destroy']);
+
+            Route::get   ('sessions',     [AdminSessionController::class, 'index']);
+            Route::delete('sessions/{id}', [AdminSessionController::class, 'destroy']);
+
+            Route::get   ('group-sessions',     [AdminGroupSessionController::class, 'index']);
+            Route::delete('group-sessions/{id}', [AdminGroupSessionController::class, 'destroy']);
+
+            Route::get   ('reviews',     [AdminReviewController::class, 'index']);
+            Route::delete('reviews/{id}', [AdminReviewController::class, 'destroy']);
+        });
     });
 });

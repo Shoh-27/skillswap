@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import {
   LayoutDashboard, Compass, Link2, MessageSquare,
-  User, LogOut, Zap, Calendar, Users, TrendingUp, Sparkles,
+  User, LogOut, Zap, Calendar, Users, TrendingUp, Sparkles, ShieldCheck,
 } from 'lucide-react'
 import NotificationsDropdown from '../components/NotificationsDropdown'
 
@@ -94,6 +94,9 @@ export default function AppLayout() {
           <div className="my-2 h-px bg-slate-100 mx-2" />
           <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest px-3 mb-2">Account</p>
           <NavLink to="/profile" className={sideCls}><User size={16} />Profile</NavLink>
+          {user?.role === 'admin' && (
+            <NavLink to="/admin" className={sideCls}><ShieldCheck size={16} />Admin panel</NavLink>
+          )}
 
           <div className="mt-auto pt-3">
             <button

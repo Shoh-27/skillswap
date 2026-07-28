@@ -11,9 +11,11 @@ class AuthService
     public function register(array $data): array
     {
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => $data['password'], // cast handles hashing
+            'name'      => $data['name'],
+            'email'     => $data['email'],
+            'password'  => $data['password'], // cast handles hashing
+            'role'      => 'user',
+            'is_banned' => false,
         ]);
 
         $token = $user->createToken('api-token')->plainTextToken;
@@ -28,6 +30,12 @@ class AuthService
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        if ($user->is_banned) {
+            throw ValidationException::withMessages([
+                'email' => ['This account has been suspended.'],
             ]);
         }
 
